@@ -1,11 +1,11 @@
-import { ArrowButton } from 'components/arrow-button';
-import { Text } from 'components/text';
-import { Select } from 'components/select';
-import { RadioGroup } from 'components/radio-group';
-import { Separator } from '../separator';
-import { Button } from 'components/button';
+import { ArrowButton } from 'src/ui/arrow-button';
+import { Text } from 'src/ui/text';
+import { Select } from 'src/ui/select';
+import { RadioGroup } from 'src/ui/radio-group';
+import { Separator } from 'src/ui/separator';
+import { Button } from 'src/ui/button';
 import { useState, FormEvent, useRef } from 'react';
-import { useClose } from '../arrow-button/hooks/useClose';
+import { useClose } from 'src/ui/hooks/useClose';
 import {
 	fontFamilyOptions,
 	fontColors,
