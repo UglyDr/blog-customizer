@@ -4,7 +4,8 @@ import { Select } from 'components/select';
 import { RadioGroup } from 'components/radio-group';
 import { Separator } from '../separator';
 import { Button } from 'components/button';
-import { useState, useEffect, FormEvent, useRef } from 'react';
+import { useState, FormEvent, useRef } from 'react';
+import { useClose } from '../arrow-button/hooks/useClose';
 import {
 	fontFamilyOptions,
 	fontColors,
@@ -17,45 +18,6 @@ import {
 } from 'src/constants/articleProps';
 import clsx from 'clsx';
 import styles from './ArticleParamsForm.module.scss';
-
-type TUseClose = {
-	form: boolean;
-	onClose: () => void;
-	rootRef: React.RefObject<HTMLElement>;
-};
-
-export function useClose({ form, onClose, rootRef }: TUseClose) {
-	useEffect(() => {
-		if (!form) return; // останавливаем действие эффекта, если закрыто
-
-		function handleClickOutside(event: MouseEvent) {
-			const { target } = event;
-			const isOutsideClick =
-				target instanceof Node && // проверяем, что это `DOM`-элемент
-				rootRef.current &&
-				!rootRef.current.contains(target); // проверяем, что кликнули на элемент, который находится не внутри нашего блока
-			if (isOutsideClick) {
-				onClose();
-			}
-		}
-
-		const handleEscape = (e: KeyboardEvent) => {
-			if (e.key === 'Escape') {
-				onClose();
-			}
-		};
-
-		document.addEventListener('keydown', handleEscape);
-		document.addEventListener('mousedown', handleClickOutside);
-
-		//  обязательно удаляем обработчики в `clean-up`- функции
-		return () => {
-			document.removeEventListener('keydown', handleEscape);
-			document.removeEventListener('mousedown', handleClickOutside);
-		};
-		// обязательно следим за `form`, чтобы срабатывало только при открытии, а не при любой перерисовке компонента
-	}, [form, onClose, rootRef]);
-}
 
 type ArticleParamsFormProps = {
 	defaultArticle: ArticleStateType;
@@ -121,7 +83,7 @@ export const ArticleParamsForm = ({
 					onReset={resetSidebar}
 					ref={ref}>
 					<Text
-						as='h1'
+						as='h2'
 						size={31}
 						weight={800}
 						fontStyle='normal'
@@ -163,7 +125,7 @@ export const ArticleParamsForm = ({
 						onChange={handleContentWidthOptions}
 					/>
 					<div className={styles.bottomContainer}>
-						<Button title='Сбросить' type='clear' />
+						<Button title='Сбросить' type='clear' onClick={resetSidebar} />
 						<Button title='Применить' type='apply' />
 					</div>
 				</form>
