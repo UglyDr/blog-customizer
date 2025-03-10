@@ -28,59 +28,61 @@ export const ArticleParamsForm = ({
 	defaultArticle,
 	setDefaultArticle,
 }: ArticleParamsFormProps) => {
-	const [form, setForm] = useState(false);
-	const [state, setState] = useState(defaultArticle);
+	const [isFormOpen, setIsFormOpen] = useState(false);
+	const [ArticleState, setArticleState] = useState(defaultArticle);
 	const ref = useRef<HTMLFormElement | null>(null);
 
 	useClose({
-		form,
-		onClose: () => setForm(false),
+		isFormOpen,
+		onClose: () => setIsFormOpen(false),
 		rootRef: ref,
 	});
 
-	function submitSidebar(event: FormEvent) {
+	function handleSubmit(event: FormEvent) {
 		event.preventDefault();
-		setDefaultArticle(state);
+		setDefaultArticle(ArticleState);
 	}
 
-	function resetSidebar() {
-		setState(defaultArticleState);
+	function handleReset() {
+		setArticleState(defaultArticleState);
 		setDefaultArticle(defaultArticleState);
 	}
 
 	function changeToggleForm() {
-		setForm((form) => !form);
+		setIsFormOpen((isFormOpen) => !isFormOpen);
 	}
 
 	function changeFontFamily(value: OptionType) {
-		setState({ ...state, fontFamilyOption: value });
+		setArticleState({ ...ArticleState, fontFamilyOption: value });
 	}
 
 	function changeFontSize(value: OptionType) {
-		setState({ ...state, fontSizeOption: value });
+		setArticleState({ ...ArticleState, fontSizeOption: value });
 	}
 
 	function changeFontColor(value: OptionType) {
-		setState({ ...state, fontColor: value });
+		setArticleState({ ...ArticleState, fontColor: value });
 	}
 
 	function changeBackgroundColor(value: OptionType) {
-		setState({ ...state, backgroundColor: value });
+		setArticleState({ ...ArticleState, backgroundColor: value });
 	}
 
 	function changeContentWidth(value: OptionType) {
-		setState({ ...state, contentWidth: value });
+		setArticleState({ ...ArticleState, contentWidth: value });
 	}
 
 	return (
 		<>
-			<ArrowButton isOpen={form} onClick={changeToggleForm} />
+			<ArrowButton isOpen={isFormOpen} onClick={changeToggleForm} />
 			<aside
-				className={clsx(styles.container, { [styles.container_open]: form })}>
+				className={clsx(styles.container, {
+					[styles.container_open]: isFormOpen,
+				})}>
 				<form
 					className={styles.form}
-					onSubmit={submitSidebar}
-					onReset={resetSidebar}
+					onSubmit={handleSubmit}
+					onReset={handleReset}
 					ref={ref}>
 					<Text
 						as='h2'
@@ -93,7 +95,7 @@ export const ArticleParamsForm = ({
 						Задайте параметры
 					</Text>
 					<Select
-						selected={state.fontFamilyOption}
+						selected={ArticleState.fontFamilyOption}
 						options={fontFamilyOptions}
 						title='Шрифт'
 						onChange={changeFontFamily}
@@ -101,25 +103,25 @@ export const ArticleParamsForm = ({
 					<RadioGroup
 						name='font-size'
 						options={fontSizeOptions}
-						selected={state.fontSizeOption}
+						selected={ArticleState.fontSizeOption}
 						onChange={changeFontSize}
 						title='Размер шрифта'
 					/>
 					<Select
-						selected={state.fontColor}
+						selected={ArticleState.fontColor}
 						options={fontColors}
 						title='Цвет шрифта'
 						onChange={changeFontColor}
 					/>
 					<Separator />
 					<Select
-						selected={state.backgroundColor}
+						selected={ArticleState.backgroundColor}
 						options={backgroundColors}
 						title='Цвет фона'
 						onChange={changeBackgroundColor}
 					/>
 					<Select
-						selected={state.contentWidth}
+						selected={ArticleState.contentWidth}
 						options={contentWidthArr}
 						title='Ширина контента'
 						onChange={changeContentWidth}

@@ -1,14 +1,14 @@
 import { useEffect } from 'react';
 
 type TUseClose = {
-	form: boolean;
+	isFormOpen: boolean;
 	onClose: () => void;
 	rootRef: React.RefObject<HTMLElement>;
 };
 
-export function useClose({ form, onClose, rootRef }: TUseClose) {
+export function useClose({ isFormOpen, onClose, rootRef }: TUseClose) {
 	useEffect(() => {
-		if (!form) return; // останавливаем действие эффекта, если закрыто
+		if (!isFormOpen) return; // останавливаем действие эффекта, если закрыто
 
 		function handleClickOutside(event: MouseEvent) {
 			const { target } = event;
@@ -36,5 +36,5 @@ export function useClose({ form, onClose, rootRef }: TUseClose) {
 			document.removeEventListener('mousedown', handleClickOutside);
 		};
 		// обязательно следим за `form`, чтобы срабатывало только при открытии, а не при любой перерисовке компонента
-	}, [form, onClose, rootRef]);
+	}, [isFormOpen, onClose, rootRef]);
 }
